@@ -1,5 +1,8 @@
 ## Week 1 - part 2
 ## reading JSON
+rm(list=ls())
+install.packages("jsonlite")
+install.packages('httr')
 require(jsonlite)
 fileURL <- "https://api.github.com/users/ebratt/repos"
 jsonData <- fromJSON(fileURL)
@@ -17,10 +20,11 @@ head(iris2)
 ## using data.table package
 ## faster at subsetting, grouping, and updating
 ## like small databases local to the environment
+rm(list=ls())
+install.packages("data.table")
 library(data.table)
 DF <- data.frame(x=rnorm(9), y=rep(c("a","b","c"), each=3), z=rnorm(9))
 head(DF,3)
-rm(list=ls())
 DT <- data.table(x=rnorm(9), y=rep(c("a","b","c"), each=3), z=rnorm(9))
 head(DT,3)
 tables()
@@ -62,8 +66,6 @@ DT2 <- data.table(x=c('a','b','dt2'), z=5:7)
 setkey(DT1, x)
 setkey(DT2, x)
 merge(DT1, DT2) ## no need to define how the merge/join happens if you have the same key column! Implicit inner join...
-help(join)
-help(merge)
 rm(list=ls())
 big_df <- data.frame(x=rnorm(1E6), y=rnorm(1E6))
 file <- tempfile()
@@ -80,20 +82,27 @@ if (!file.exists("./quiz1"))
     dir.create("./quiz1")
 setwd("./quiz1")
 destfile <- "housing_idaho.csv" ## destination file name
-download.file(url=url, destfile=destfile, method="curl") ## download the file
+if (Sys.info()[['sysname']] == 'Windows') {
+    download.file(url=url, destfile=destfile) ## download the file
+} else {
+    download.file(url=url, destfile=destfile, method="curl") ## download the file
+}
 DT <- data.table(fread(destfile))  ## fast-read the file into a data table
 DT[,sum(.N),VAL>23]  ## add the Number of occ's where VAL>$999,999
 
 ## question 2
 DT[,.N,by=FES] ## count the number of family and employment status groups
-head(DT)
 
 ## question 3
 rm(list=ls())
 library(xlsx)
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2FDATA.gov_NGAP.xlsx"
 destfile <- "ngap.xlsx"
-download.file(url=url, destfile=destfile, method="curl")
+if (Sys.info()[['sysname']] == 'Windows') {
+    download.file(url=url, destfile=destfile, mode="wb")
+} else {
+    download.file(url=url, destfile=destfile, method="curl")
+}
 dat <- read.xlsx(destfile, 
                  sheetIndex=1,
                  rowIndex=c(18,19,20,21,22,23), 
@@ -105,7 +114,11 @@ rm(list=ls())
 library(XML)
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
 destfile <- "restaurants.xml"
-download.file(url=url, destfile=destfile, method="curl")
+if (Sys.info()[['sysname']] == 'Windows') {
+    download.file(url=url, destfile=destfile)
+} else {
+    download.file(url=url, destfile=destfile, method="curl")
+}
 doc <- xmlTreeParse(destfile, useInternalNodes=TRUE)  ## parse the XML
 top <- xmlRoot(doc)  ## get the root node
 zipcodes <- xpathSApply(top, "//zipcode", xmlValue)  ## get the zipcodes
@@ -116,6 +129,12 @@ DT[, .N, by=zipcodes][zipcodes==21231]  ## group by zipcode and select for 21231
 rm(list=ls())
 url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv"
 destfile <- "communities_idaho.csv"
-download.file(url=url,destfile=destfile,method="curl")
+if (Sys.info()[['sysname']] == 'Windows') {
+    download.file(url=url,destfile=destfile)
+} else {
+    download.file(url=url,destfile=destfile,method="curl")
+}
 DT <- data.table(fread(destfile))
 DT[, mean(pwgtp15),by=SEX]
+
+rm(list=ls())
