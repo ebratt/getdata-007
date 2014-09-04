@@ -25,3 +25,8 @@ Slide With Plot
 ```{r, echo=FALSE}
 plot(cars)
 ```
+
+Slide with HTML
+========================================================
+
+<div style="background-color:#000000;width:520px;"><div style="padding:4px;"><iframe src="http://media.mtvnservices.com/embed/mgid:arc:video:colbertnation.com:e352ee4d-8b94-4fde-bb2c-c9971a9e3264" width="512" height="288" frameborder="0"></iframe><p style="text-align:left;background-color:#FFFFFF;padding:4px;margin-top:4px;margin-bottom:0px;font-family:Arial, Helvetica, sans-serif;font-size:12px;"><b><a href="http://thecolbertreport.cc.com/">The Colbert Report</a></b><br />Get More: <a href="http://thecolbertreport.cc.com/full-episodes/">Daily Show Full Episodes</a>,<a href="http://www.comedycentral.com/indecision">Indecision Political Humor</a>,<a href="http://www.facebook.com/thecolbertreport">The Colbert Report on Facebook</a></p></div></div>
